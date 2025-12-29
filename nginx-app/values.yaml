@@ -22,7 +22,7 @@ resources:
 
 storage:
   size: 1Gi
-  storageClass: ""  # Use default StorageClass if empty, or specify: "standard", "gp2", etc.
+  storageClass: ""  # Use default StorageClass if empty
 
 auth:
   # htpasswd entry: admin / admin123 (SHA format)
