@@ -1,0 +1,20 @@
+1. Why ArgoCD is beneficial for deploying applications
+  - Git as the single source of truth
+  - automatically syncs cluster state with Git
+  - supports rollbacks by reverting Git commits
+  - works well with helm
+
+2. Why mTLS is valuable in Kubernetes clusters
+  - encrypts service-to-service traffic
+  - works without app code changes
+  - prevents unauthorized pod communication
+
+3. When Argo CD should NOT be used and why
+  - very small single-service cluster
+  - short-lived tests
+  - applications requiring manual control
+
+4. When mTLS / Service Mesh should NOT be used and why
+  - Simple applications with minimal security needs
+  - Short-lived or non-production environments
+  - When network security is already enforced externally
