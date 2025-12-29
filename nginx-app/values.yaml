@@ -5,7 +5,7 @@ image:
   tag: 1.21.6
   pullPolicy: IfNotPresent
 
-replicaCount: 2
+replicaCount: 4
 
 service:
   type: LoadBalancer
