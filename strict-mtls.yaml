@@ -1,12 +1,4 @@
-apiVersion: security.istio.io/v1beta1
-kind: PeerAuthentication
-metadata:
-  name: default
-  namespace: nginx-app
-spec:
-  mtls:
-    mode: STRICT
----
+# Mesh-wide STRICT mTLS - applies to all namespaces
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
