@@ -3,30 +3,40 @@ kind: ConfigMap
 metadata:
   name: nginx-config
   namespace: {{ .Values.namespace }}
+  labels:
+    app: nginx-app
+    app.kubernetes.io/name: nginx-app
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: config
+    app.kubernetes.io/part-of: nginx-app
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    description: "NGINX configuration file"
 data:
   nginx.conf: |
     events {
         worker_connections 1024;
     }
-    
+
     http {
         include /etc/nginx/mime.types;
         default_type application/octet-stream;
-        
+
         sendfile on;
         keepalive_timeout 65;
-        
+
         server {
             listen {{ required "service.port is required" .Values.service.port }};
             server_name _;
-            
+
             location / {
                 root /usr/share/nginx/html;
                 index index.html;
                 auth_basic "Restricted Access";
                 auth_basic_user_file /etc/nginx/.htpasswd;
             }
-            
+
             location /health {
                 access_log off;
                 return 200 "healthy\n";

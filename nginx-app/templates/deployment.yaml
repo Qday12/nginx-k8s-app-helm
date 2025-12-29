@@ -3,15 +3,33 @@ kind: Deployment
 metadata:
   name: nginx-deployment
   namespace: {{ .Values.namespace }}
+  labels:
+    app: nginx-app
+    app.kubernetes.io/name: nginx-app
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+    app.kubernetes.io/component: webserver
+    app.kubernetes.io/part-of: nginx-app
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    description: "NGINX web server with basic authentication"
 spec:
   replicas: {{ required "replicaCount is required" .Values.replicaCount }}
   selector:
     matchLabels:
-      app: nginx
+      app: nginx-app
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx-app
+        app.kubernetes.io/name: nginx-app
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/version: {{ .Values.image.tag | quote }}
+        app.kubernetes.io/component: webserver
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
     spec:
       containers:
       - name: nginx
@@ -51,9 +69,11 @@ spec:
       - name: nginx-config
         configMap:
           name: nginx-config
+          optional: false
       - name: nginx-secret
         secret:
           secretName: nginx-secret
+          optional: false
       - name: nginx-storage
         persistentVolumeClaim:
           claimName: nginx-pvc

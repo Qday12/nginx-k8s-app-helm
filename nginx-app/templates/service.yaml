@@ -3,10 +3,20 @@ kind: Service
 metadata:
   name: nginx-service
   namespace: {{ .Values.namespace }}
+  labels:
+    app: nginx-app
+    app.kubernetes.io/name: nginx-app
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: webserver
+    app.kubernetes.io/part-of: nginx-app
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    description: "LoadBalancer service for NGINX"
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: nginx
+    app: nginx-app
   ports:
   - protocol: TCP
     port: {{ .Values.service.port }}

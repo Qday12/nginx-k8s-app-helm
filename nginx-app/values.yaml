@@ -19,9 +19,18 @@ resources:
     memory: "128Mi"
     cpu: "200m"
 
+
 storage:
   size: 1Gi
+  storageClass: ""  # Use default StorageClass if empty, or specify: "standard", "gp2", etc.
 
 auth:
   # htpasswd entry: admin / admin123 (SHA format)
   htpasswd: "admin:{SHA}+GW1NiOxIf007lQmx5Llwzr4wic="
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80

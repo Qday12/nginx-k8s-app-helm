@@ -3,9 +3,22 @@ kind: PersistentVolumeClaim
 metadata:
   name: nginx-pvc
   namespace: {{ .Values.namespace }}
+  labels:
+    app: nginx-app
+    app.kubernetes.io/name: nginx-app
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/part-of: nginx-app
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+  annotations:
+    description: "Persistent storage for NGINX web content"
 spec:
   accessModes:
     - ReadWriteOnce
+  {{- if .Values.storage.storageClass }}
+  storageClassName: {{ .Values.storage.storageClass }}
+  {{- end }}
   resources:
     requests:
       storage: {{ required "storage.size is required" .Values.storage.size }}
