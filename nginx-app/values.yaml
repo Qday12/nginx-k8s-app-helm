@@ -1,0 +1,27 @@
+namespace: nginx-app
+
+image:
+  repository: nginx
+  tag: 1.21.6
+  pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources:
+  requests:
+    memory: "64Mi"
+    cpu: "100m"
+  limits:
+    memory: "128Mi"
+    cpu: "200m"
+
+storage:
+  size: 1Gi
+
+auth:
+  # htpasswd entry: admin / admin123 (SHA format)
+  htpasswd: "admin:{SHA}+GW1NiOxIf007lQmx5Llwzr4wic="
